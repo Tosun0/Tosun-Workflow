@@ -1,0 +1,12 @@
+{
+  "name": "tosun-team",
+  "interface": { "displayName": "Tosun Workflow" },
+  "plugins": [
+    {
+      "name": "tosun-workflow",
+      "source": { "source": "local", "path": "./plugins/tosun-workflow" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_USE" },
+      "category": "Productivity"
+    }
+  ]
+}

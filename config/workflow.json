@@ -1,0 +1,14 @@
+{
+  "stages": [
+    {"id": "storyboard", "label": "스토리보드 작성", "number": 1},
+    {"id": "prompts", "label": "프롬프트 제작", "number": 2},
+    {"id": "image", "label": "이미지 생성", "number": 3},
+    {"id": "video", "label": "Higgsfield 영상", "number": 4},
+    {"id": "remotion", "label": "모션 그래픽 제작", "number": 5},
+    {"id": "publish", "label": "최종 공개 파일", "number": 6}
+  ],
+  "input_extensions": [
+    ".txt", ".md", ".markdown", ".json", ".csv", ".docx", ".pdf",
+    ".png", ".jpg", ".jpeg", ".webp", ".gif", ".mp4", ".mov", ".webm"
+  ]
+}

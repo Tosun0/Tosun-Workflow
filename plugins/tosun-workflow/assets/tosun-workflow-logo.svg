@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Tosun Workflow">
+  <rect width="512" height="512" rx="112" fill="#FFF7FA"/>
+  <g stroke="#111111" stroke-width="9" stroke-linejoin="round" stroke-linecap="round">
+    <path fill="#FFFFFF" d="M174 154C166 111 137 71 154 43c18-29 50 2 63 31l25 58c9-2 18-3 27-3s18 1 27 3l25-58c13-29 45-60 63-31 17 28-12 68-20 111 36 25 59 69 59 120 0 37-12 70-34 94 10 18 25 39 22 55-4 21-35 22-56 4l-30-26c-17 10-37 16-56 18l-3 39c-2 24-38 24-40 0l-3-39c-20-2-39-8-56-18l-30 26c-21 18-52 17-56-4-3-16 12-37 22-55-22-24-34-57-34-94 0-51 23-95 59-120Z"/>
+    <path fill="#F28CA4" stroke="none" d="M181 122c-8-31-24-55-18-64 8-11 23 8 31 27l19 44Z"/>
+    <path fill="#F28CA4" stroke="none" d="M331 129l19-44c8-19 23-38 31-27 6 9-10 33-18 64Z"/>
+    <ellipse cx="216" cy="218" rx="16" ry="22" fill="#111111" stroke="none"/>
+    <ellipse cx="296" cy="218" rx="16" ry="22" fill="#111111" stroke="none"/>
+    <ellipse cx="256" cy="251" rx="19" ry="12" fill="#111111" stroke="none"/>
+  </g>
+</svg>

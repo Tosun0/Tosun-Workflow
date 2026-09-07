@@ -1,0 +1,23 @@
+{
+  "name": "tosun-workflow",
+  "version": "0.1.0",
+  "description": "Tosun Workflow plugin",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Tosun Workflow",
+    "shortDescription": "Use Tosun Workflow in Codex.",
+    "longDescription": "Tosun Workflow adds a local Codex plugin scaffold.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "토순 워크플로우 사용 방법을 알려줘"
+    ],
+    "composerIcon": "./assets/tosun-workflow-small.svg",
+    "logo": "./assets/tosun-workflow-logo.svg",
+    "brandColor": "#F28CA4"
+  }
+}

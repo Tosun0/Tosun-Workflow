@@ -1,0 +1,12 @@
+{
+  "project": "YYYYMMDD_short-slug",
+  "artifact": "<project-id>__s<stage-number>__<role>__v###.<ext>",
+  "backup": "<project-id>__backup__YYYYMMDD_HHMMSS__<reason>",
+  "public": [
+    "manifest.json",
+    "thumbnail.png",
+    "video.mp4",
+    "infographic.mp4"
+  ],
+  "safe_slug": "lowercase ascii words separated by hyphens"
+}
