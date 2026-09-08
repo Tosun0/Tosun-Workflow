@@ -1,12 +1,12 @@
-# Tosun Workflow Git 배포
+# Tosun Studio Git 배포
 
 ## 저장소 구성
 
 - `.agents/plugins/marketplace.json`: Git 배포용 마켓플레이스
-- `plugins/tosun-workflow/`: Codex 플러그인 본체
-- `plugins/tosun-workflow/assets/`: composer 아이콘과 로고
-- `plugins/tosun-workflow/skills/00-master-tosun/SKILL.md`: 전체 워크플로우·승인 지침
-- `plugins/tosun-workflow/skills/{01-storyboard,02-image,03-video,04-remotion}/SKILL.md`: 시퀀스별 실행 지침
+- `plugins/tosun-studio/`: Codex 플러그인 본체
+- `plugins/tosun-studio/assets/`: composer 아이콘과 로고
+- `plugins/tosun-studio/skills/00-master-tosun/SKILL.md`: 전체 워크플로우·승인 지침
+- `plugins/tosun-studio/skills/{01-storyboard,02-image,03-video,04-remotion}/SKILL.md`: 시퀀스별 실행 지침
 
 ## 설치
 
@@ -14,7 +14,7 @@
 
 ```powershell
 codex plugin marketplace add .
-codex plugin add tosun-workflow@tosun-team
+codex plugin add tosun-studio@tosun-team
 ```
 
 설치 후 새 Codex 작업을 열어야 최신 지침이 적용됩니다.

@@ -10,7 +10,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
-import tosun_workflow as workflow
+import tosun_studio as workflow
 
 
 def json_bytes(payload: object) -> bytes:
@@ -18,7 +18,7 @@ def json_bytes(payload: object) -> bytes:
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "TosunWorkflow/0.1"
+    server_version = "TosunStudio/0.1"
 
     def log_message(self, format: str, *args: object) -> None:
         print(f"[GUI] {self.address_string()} - {format % args}")
@@ -61,7 +61,7 @@ class Handler(BaseHTTPRequestHandler):
             if path.startswith("/docs/"):
                 return self.send_file(workflow.safe_path(unquote(path.removeprefix("/docs/")), workflow.DATA_ROOT / "docs"))
             if path == "/api/health":
-                return self.send_json({"ok": True, "service": "tosun-workflow", "app_root": str(workflow.ROOT), "data_root": str(workflow.DATA_ROOT)})
+                return self.send_json({"ok": True, "service": "tosun-studio", "app_root": str(workflow.ROOT), "data_root": str(workflow.DATA_ROOT)})
             if path == "/api/files":
                 return self.send_json({"files": workflow.discover_files()})
             if path == "/api/projects":
@@ -133,7 +133,7 @@ def serve(port: int) -> None:
     if server is None:
         raise OSError(f"No free port found from {requested_port} to {requested_port + 9}")
     url = f"http://127.0.0.1:{port}"
-    print(f"Tosun Workflow GUI: {url}")
+    print(f"Tosun Studio GUI: {url}")
     webbrowser.open(url)
     try:
         server.serve_forever()
@@ -144,7 +144,7 @@ def serve(port: int) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Tosun Workflow Generator")
+    parser = argparse.ArgumentParser(description="Tosun Studio Generator")
     parser.add_argument("--serve", action="store_true")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--encrypt-private", metavar="PATH")

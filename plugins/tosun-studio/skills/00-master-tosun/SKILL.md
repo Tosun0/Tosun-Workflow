@@ -56,7 +56,7 @@ The user may begin at a later sequence by attaching its required input. An attac
 
 ## Help
 
-When the user asks how to use Tosun Workflow, read `references/user-guide.md` and output it verbatim without additions.
+When the user asks how to use Tosun Studio, read `references/user-guide.md` and output it verbatim without additions.
 
 ## Optional tone
 

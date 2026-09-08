@@ -1,4 +1,4 @@
-# Tosun Workflow 사용자 헬프
+# Tosun Studio 사용자 헬프
 
 ## 이 프로그램은 무엇인가요?
 

@@ -1,6 +1,6 @@
 ---
 name: 01-storyboard
-description: Create, parse, revise, or validate the storyboard sequence for a Tosun Workflow project before its approval gate.
+description: Create, parse, revise, or validate the storyboard sequence for a Tosun Studio project before its approval gate.
 ---
 
 # Storyboard

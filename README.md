@@ -1,4 +1,4 @@
-# Tosun Workflow Generator
+# Tosun Studio Generator
 
 스토리보드와 모션그래픽 자료를 넣고, Codex 대화창에서 각 단계의 결과를 확인·승인하는 반자동 제작 워크플로우입니다.
 
@@ -8,7 +8,7 @@
 2. Codex에서 `스토리보드 분석해`라고 입력합니다.
 3. 결과를 확인하고 `현재 결과 승인`, `다음 단계 진행`으로 작업합니다.
 
-사용자는 플러그인 폴더나 Python 스크립트에 직접 접근할 필요가 없습니다. Tosun Workflow 플러그인이 내부 bridge를 자동 호출합니다.
+사용자는 플러그인 폴더나 Python 스크립트에 직접 접근할 필요가 없습니다. Tosun Studio 플러그인이 내부 bridge를 자동 호출합니다.
 
 ## 기본 워크플로우
 
@@ -38,15 +38,15 @@
 ## 파일 하이어라키
 
 ```text
-Tosun Generator/
+Tosun Studio/
 ├─ AGENTS.md                         Codex 작업 지침
 ├─ README.md                         사람용 사용 설명
 ├─ runner.py                         로컬 엔진과 CLI 진입점
-├─ tosun_workflow.py                 상태/파일/백업/단계 로직
+├─ tosun_studio.py                 상태/파일/백업/단계 로직
 ├─ run.ps1                           Windows 실행 스크립트
 ├─ package.ps1                       EXE 패키징 스크립트
 ├─ plugins/
-│  └─ tosun-workflow/                Codex 반자동화 플러그인 소스
+│  └─ tosun-studio/                Codex 반자동화 플러그인 소스
 │     ├─ .codex-plugin/plugin.json
 │     ├─ skills/00-master-tosun/SKILL.md  전체 순서·승인·백업·상태 관리
 │     ├─ skills/01-storyboard/SKILL.md    스토리보드 작성·분석
@@ -83,8 +83,8 @@ Tosun Generator/
    │  └─ events.jsonl                 승인/수정/실행 이벤트
    ├─ backups/<project-id>/            타임스탬프별 백업
 │  └─ exports/                         최종 외부 전달물
-├─ packaged/TosunWorkflow/             (선택적 레거시 EXE 패키지)
-│  ├─ TosunWorkflow.exe
+├─ packaged/TosunStudio/             (선택적 레거시 EXE 패키지)
+│  ├─ TosunStudio.exe
 │  ├─ web/
 │  ├─ config/                          패키지 설정
 │  ├─ instructions/                    패키지 지침

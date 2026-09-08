@@ -1,10 +1,10 @@
 {
   "name": "tosun-team",
-  "interface": { "displayName": "Tosun Workflow" },
+  "interface": { "displayName": "Tosun Studio" },
   "plugins": [
     {
-      "name": "tosun-workflow",
-      "source": { "source": "local", "path": "./plugins/tosun-workflow" },
+      "name": "tosun-studio",
+      "source": { "source": "local", "path": "./plugins/tosun-studio" },
       "policy": { "installation": "AVAILABLE", "authentication": "ON_USE" },
       "category": "Productivity"
     }

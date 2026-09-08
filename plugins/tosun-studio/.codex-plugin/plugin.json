@@ -1,23 +1,23 @@
 {
-  "name": "tosun-workflow",
-  "version": "0.2.0+codex.20260908054754",
+  "name": "tosun-studio",
+  "version": "0.2.0+codex.20260908083921",
   "description": "Master-Tosun orchestrates approved storyboard, image, Higgsfield video, and Remotion skills.",
   "author": {
     "name": "Tosun"
   },
   "skills": "./skills/",
   "interface": {
-    "displayName": "Tosun Workflow",
-    "shortDescription": "Use Tosun Workflow in Codex.",
+    "displayName": "Tosun Studio",
+    "shortDescription": "Use Tosun Studio in Codex.",
     "longDescription": "Master-Tosun routes storyboard, native image generation, connected Higgsfield video, and Remotion plugin rendering through explicit approval gates and backups.",
     "developerName": "Tosun",
     "category": "Productivity",
     "capabilities": [],
     "defaultPrompt": [
-      "\ud1a0\uc21c \uc6cc\ud06c\ud50c\ub85c\uc6b0 \uc0ac\uc6a9 \ubc29\ubc95\uc744 \uc54c\ub824\uc918"
+      "\ud1a0\uc21c \uc2a4\ud29c\ub514\uc624 \uc0ac\uc6a9 \ubc29\ubc95\uc744 \uc54c\ub824\uc918"
     ],
-    "composerIcon": "./assets/tosun-workflow-small.svg",
-    "logo": "./assets/tosun-workflow-logo.svg",
+    "composerIcon": "./assets/tosun-studio-small.svg",
+    "logo": "./assets/tosun-studio-logo.svg",
     "brandColor": "#F28CA4"
   }
 }

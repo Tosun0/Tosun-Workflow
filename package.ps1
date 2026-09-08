@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path -LiteralPath $PSScriptRoot).Path
 $python = 'C:\Users\mjo24\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
 $packageRoot = Join-Path $root 'packaged'
-$bundleRoot = Join-Path $packageRoot 'TosunWorkflow'
+$bundleRoot = Join-Path $packageRoot 'TosunStudio'
 $buildRoot = Join-Path $root 'build'
 
 if (-not (Test-Path -LiteralPath $python)) {
@@ -23,7 +23,7 @@ if (Test-Path -LiteralPath $buildRoot) {
     --clean `
     --onedir `
     --windowed `
-    --name TosunWorkflow `
+    --name TosunStudio `
     --distpath $packageRoot `
     --workpath $buildRoot `
     --specpath $buildRoot `
@@ -37,14 +37,14 @@ Copy-Item -LiteralPath (Join-Path $root 'AGENTS.md') -Destination (Join-Path $bu
 
 $launch = @"
 @echo off
-start "" "%~dp0TosunWorkflow.exe"
+start "" "%~dp0TosunStudio.exe"
 "@
-[System.IO.File]::WriteAllText((Join-Path $bundleRoot 'TosunWorkflow.cmd'), $launch, [System.Text.Encoding]::ASCII)
+[System.IO.File]::WriteAllText((Join-Path $bundleRoot 'TosunStudio.cmd'), $launch, [System.Text.Encoding]::ASCII)
 
 $readme = @"
-# Tosun Workflow packaged build
+# Tosun Studio packaged build
 
-실행 파일: TosunWorkflow.exe
+실행 파일: TosunStudio.exe
 
 실행하면 로컬 GUI가 브라우저에서 자동으로 열립니다.
 작업 파일은 이 폴더의 workspace에 저장됩니다.

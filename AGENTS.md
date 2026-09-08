@@ -1,4 +1,4 @@
-# Tosun Workflow Agent Rules
+# Tosun Studio Agent Rules
 
 ## Operating rules
 

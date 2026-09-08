@@ -3,7 +3,7 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILLS = ROOT / "plugins" / "tosun-workflow" / "skills"
+SKILLS = ROOT / "plugins" / "tosun-studio" / "skills"
 
 
 class PluginSkillLayoutTests(unittest.TestCase):

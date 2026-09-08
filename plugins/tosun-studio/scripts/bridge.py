@@ -10,7 +10,7 @@ from pathlib import Path
 
 def resolve_project_root() -> Path:
     candidates: list[Path] = []
-    configured = os.environ.get("TOSUN_WORKFLOW_ROOT")
+    configured = os.environ.get("TOSUN_STUDIO_ROOT")
     if configured:
         candidates.append(Path(configured).expanduser())
     plugin_root = Path(__file__).resolve().parents[1]
@@ -19,16 +19,16 @@ def resolve_project_root() -> Path:
     candidates.append(current)
     candidates.extend(current.parents)
     for candidate in candidates:
-        if (candidate / "tosun_workflow.py").is_file() and (candidate / "workspace").is_dir():
+        if (candidate / "tosun_studio.py").is_file() and (candidate / "workspace").is_dir():
             return candidate
-    raise RuntimeError("Tosun Workflow engine is not bundled or TOSUN_WORKFLOW_ROOT is not configured")
+    raise RuntimeError("Tosun Studio engine is not bundled or TOSUN_STUDIO_ROOT is not configured")
 
 
 PROJECT_ROOT = resolve_project_root()
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-import tosun_workflow as workflow
+import tosun_studio as workflow
 
 
 def compact_manifest(manifest: dict) -> dict:
@@ -168,7 +168,7 @@ def command_replace(args: argparse.Namespace) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Compact Codex bridge for Tosun Workflow")
+    parser = argparse.ArgumentParser(description="Compact Codex bridge for Tosun Studio")
     subparsers = parser.add_subparsers(dest="command", required=True)
     status = subparsers.add_parser("status")
     status.add_argument("--project")

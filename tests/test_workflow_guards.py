@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import tosun_workflow as workflow
+import tosun_studio as workflow
 
 
 class WorkflowGuardTests(unittest.TestCase):

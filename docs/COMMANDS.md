@@ -1,4 +1,4 @@
-# Tosun Workflow 명령어 모음
+# Tosun Studio 명령어 모음
 
 ## 시퀀스 구성
 
@@ -73,11 +73,11 @@ python runner.py --encrypt-private instructions\private-template.md
 Codex 플러그인은 긴 로그 대신 짧은 JSON을 반환하는 bridge를 내부적으로 사용합니다. 사용자가 `plugins/` 폴더를 열거나 아래 명령을 직접 입력할 필요는 없습니다.
 
 ```powershell
-python plugins\tosun-workflow\scripts\bridge.py status
-python plugins\tosun-workflow\scripts\bridge.py status --project PROJECT_ID
-python plugins\tosun-workflow\scripts\bridge.py task --project PROJECT_ID
-python plugins\tosun-workflow\scripts\bridge.py task --project PROJECT_ID --stage image
-python plugins\tosun-workflow\scripts\bridge.py attach --project PROJECT_ID --stage image --file PATH
+python plugins\tosun-studio\scripts\bridge.py status
+python plugins\tosun-studio\scripts\bridge.py status --project PROJECT_ID
+python plugins\tosun-studio\scripts\bridge.py task --project PROJECT_ID
+python plugins\tosun-studio\scripts\bridge.py task --project PROJECT_ID --stage image
+python plugins\tosun-studio\scripts\bridge.py attach --project PROJECT_ID --stage image --file PATH
 ```
 
 attach는 해당 시퀀스의 제작 요청이 준비된 뒤 결과 파일을 연결할 때만 사용합니다. 아직 실행하지 않은 시퀀스를 건너뛰려면 사용자 인풋 교체 명령을 사용하고, 연결된 결과도 반드시 사용자 승인 후 공개됩니다.
