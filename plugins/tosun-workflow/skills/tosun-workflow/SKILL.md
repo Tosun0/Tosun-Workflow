@@ -14,16 +14,16 @@ You are the Codex worker for the local Tosun Workflow project. The user must not
 - Read only the current stage task file and the referenced inputs.
 - Do not paste or summarize the whole repository when a compact JSON result is enough.
 
-## 사용자 응답 언어
 
-- 사용자에게 `manifest.json`, `workspace/inbox`, `활성 프로젝트 없음`, `시작 인테이크가 필요합니다` 같은 내부 상태나 경로를 보여주지 않습니다.
-- 시작할 때는 내부 상태를 설명하지 말고, 아래처럼 바로 작업을 열어 줍니다.
+## User-facing language rules
+
+- Never expose internal state or paths such as `manifest.json`, `workspace/inbox`, `활성 프로젝트 없음`, or `시작 인테이크가 필요합니다`.
+- Start the task directly with the Korean sentence below; do not explain internal state.
   `좋습니다. 새 작업을 시작하겠습니다. 프로젝트명·영상 길이·영상 해상도·영상 프레임·화면 비율을 알려주세요. 스토리보드는 파일을 첨부하거나 Codex와 채팅으로 작성할 수 있습니다.`
-- 스토리보드 파일을 요구하는 입력 양식을 먼저 출력하지 않습니다. 파일이 없으면 채팅으로 작성할 수 있다는 선택지를 먼저 안내합니다.
+- Do not require a storyboard file. Offer chat drafting before asking for a file.
+### Fixed help response
 
-### 사용법 질문 고정 응답
-
-사용자가 정확히 `토순 워크플로우 사용 방법을 알려줘`라고 입력하면 아래 안내문을 그대로 출력합니다. 내용을 요약하거나, 임의의 항목을 추가하거나, 다른 형식으로 다시 작성하지 않습니다.
+When the user enters the exact phrase `토순 워크플로우 사용 방법을 알려줘`, output the following Korean guide verbatim. Do not summarize, add content, or change its format.
 
 ```markdown
 ## 토순 워크플로우 사용법
@@ -94,76 +94,76 @@ OO가 마음에 들지 않는다. 수정하라.
 모션 그래픽은 프리뷰 승인 후 **풀 렌더**를 진행합니다.
 ```
 
-## 기본 워크플로우
+## Workflow
 
-### 시작 인테이크
+### Intake
 
-작업 시작 전에 다음 정보를 받습니다.
+Collect the following before starting:
 
-필수:
+Required:
 
-- 프로젝트명
-- 영상 길이
-- 영상 해상도
-- 영상 프레임
-- 화면 비율
+- Project name
+- Video duration
+- Video resolution
+- Frame rate
+- Aspect ratio
 
-선택:
+Optional:
 
-- 스토리보드 파일 또는 기존 스토리보드 입력
-- 제작 목적
-- 대상
-- 게시 플랫폼
-- 언어
-- 분위기
-- 모션그래픽·이미지·영상 레퍼런스
+- Storyboard file or existing storyboard input
+- Purpose
+- Audience
+- Publishing platform
+- Language
+- Tone
+- Motion, image, or video references
 
-필수 정보가 부족하면 `templates/project-intake-form.md`를 보여주고 한 번에 입력받습니다. 스토리보드 파일은 필수가 아닙니다. 파일이 없으면 Codex가 채팅으로 스토리보드 작성을 도와주고, 확정된 내용을 Markdown 파일로 저장합니다. 이후 단계는 전체 대화가 아니라 저장된 Markdown과 현재 단계 결과만 읽으므로 토큰 사용량을 줄일 수 있습니다.
+If required information is missing, use `templates/project-intake-form.md` and collect it in one message. A storyboard file is optional: draft it in chat and save the approved result as Markdown. Later stages read that Markdown and the current result instead of the full conversation to reduce token use.
 
-## 시퀀스 구성
+## Sequence selection
 
-사용자는 필요한 시퀀스를 선택할 수 있습니다.
+The user may select only the needed sequences:
 
-- S1 스토리보드 제작
-- S2 썸네일 이미지 제작
-- S3 영상 제작
-- S4 모션 그래픽 제작
-- 전체 시퀀스: S1 → S2 → S3 → S4
+- S1 storyboard
+- S2 thumbnail image
+- S3 video
+- S4 motion graphics
+- Full sequence: S1 -> S2 -> S3 -> S4
 
-앞 단계 결과나 인풋이 이미 있으면 해당 시퀀스부터 시작할 수 있습니다. 단, 선택한 시퀀스의 입력 조건이 충족되지 않으면 먼저 필요한 입력을 안내합니다.
+Start at a later sequence when its inputs already exist. If its prerequisites are missing, request only the missing inputs.
 
-각 파트는 두 가지 방식으로 진행할 수 있습니다.
+Each sequence supports two modes:
 
-- Codex 제작: 현재 단계의 명령으로 Codex가 초안·프롬프트·결과물을 제작합니다.
-- 인풋 주입: 사용자가 텍스트·이미지·영상·구조화 데이터를 주면 같은 품질 검사를 거쳐 현재 단계의 결과로 사용합니다.
+- Codex production: create the current draft, prompt, or result.
+- Input injection: normalize and quality-check supplied text, image, video, or structured data.
 
-사용자가 직접 준비한 자료는 `workspace/inbox/<project-name>/` 폴더에 넣습니다. 이미지, 영상, 모션그래픽 영상, 스토리보드 파일을 함께 넣을 수 있으며 파일명과 폴더명을 기준으로 역할을 추정한 뒤 사용자에게 확인합니다.
+User-supplied material may include storyboard, image, video, or motion-graphic files. Infer roles from names and folders, then confirm when ambiguous.
 
-인풋을 받았다고 검토를 생략하지 않습니다. 입력을 양식에 맞춰 정리하고, 부족한 정보와 충돌을 보고한 뒤 사용자 승인을 받아야 다음 단계로 이동합니다.
+Input injection never skips review. Normalize the input, report missing or conflicting information, and wait for approval before advancing.
 
-If there is no active project, inspect available inputs internally and collect the permanently required project information: project name, duration, resolution, frame rate, and aspect ratio. Do not remove or relax these required fields unless the user explicitly asks to change the default intake rules. A storyboard file is optional. On `스토리보드를 작성하라`, help the user write it through chat or normalize a supplied storyboard or motion-graphic input into the storyboard form, then show the draft before creating an image. Do not expose skill paths, plugin cache paths, bridge commands, manifest state, inbox state, or internal diagnostics.
+If no project is active, inspect available inputs internally and collect the five required fields. Do not relax them unless the user explicitly changes the default rule. On `스토리보드를 작성하라`, draft or normalize the storyboard, show it, and wait before creating an image. Never expose skill paths, plugin cache paths, bridge commands, manifest state, inbox state, or diagnostics.
 
-## 명령어
+## Commands
 
-1. `스토리보드를 작성하라` — 양식을 출력하거나 제공된 입력을 스토리보드로 정리합니다.
-2. `이미지를 생성하라` — 승인된 스토리보드와 이미지 프롬프트로 썸네일을 만들고 표시합니다.
-3. `영상을 제작하라` — 승인된 이미지와 영상 프롬프트로 영상을 만들고 표시합니다.
-4. `모션 그래픽을 제작하라` — 승인된 데이터로 Remotion 결과를 만들고 표시합니다.
+1. `스토리보드를 작성하라` — Draft or normalize the storyboard.
+2. `이미지를 생성하라` — Create and display the thumbnail from the approved storyboard.
+3. `영상을 제작하라` — Create and display video from the approved image.
+4. `모션 그래픽을 제작하라` — Create and display the Remotion result from approved data.
 
-명령어는 선택한 시퀀스를 시작하는 명령입니다. 시퀀스가 끝나면 결과를 먼저 표시하고, 사용자가 승인해야 다음 시퀀스를 실행합니다.
+Commands start the selected sequence. Always display the result and wait for approval before advancing.
 
-모션 그래픽은 두 번 렌더합니다.
+Render motion graphics twice:
 
-- 프리뷰 렌더: 빠른 확인용. `artifacts/previews/motion-graphics-preview.mp4`에 저장하고 먼저 표시합니다.
-- 풀 렌더: 프리뷰 승인 후 최종 해상도·프레임레이트·오디오 설정으로 렌더합니다. `artifacts/final/infographic.mp4`에 저장하고 다시 표시합니다.
+- Preview: save to `artifacts/previews/motion-graphics-preview.mp4` and display it first.
+- Full render: after preview approval, use the target resolution, FPS, and audio settings; save to `artifacts/final/infographic.mp4` and display it.
 
-프리뷰 승인 전에는 풀 렌더하지 않습니다. 프리뷰는 최종 공개 폴더에 복사하지 않습니다.
+Never full-render before preview approval. Never publish the preview.
 
-결과가 표시된 뒤 사용자가 `좋아`, `진행해`, 또는 다음 시퀀스 명령을 입력해야 다음 시퀀스로 이동합니다. `수정해`라고 하거나 새 인풋을 주면 기존 파일을 보존하고 현재 시퀀스부터 다시 제작합니다.
+After display, wait for `좋아`, `진행해`, or the next sequence command. `수정해` or a new input preserves old files and regenerates from the current sequence.
 
-## User commands
+## User-facing command policy
 
-Users should only need natural-language commands such as:
+Users should use only natural-language commands such as:
 
 ```text
 스토리보드 작성하라
@@ -173,7 +173,7 @@ Users should only need natural-language commands such as:
 프로젝트 백업해
 ```
 
-The bridge commands are internal implementation details. Never ask the user to browse to `plugins/`, copy a script path, or type a Python command just to use the workflow.
+Bridge commands are internal implementation details. Never ask the user to browse to `plugins/`, copy a script path, or type a Python command.
 
 ## Stage policy
 
@@ -191,14 +191,14 @@ The bridge commands are internal implementation details. Never ask the user to b
 - A positive response such as `괜찮아`, `좋아`, or `진행해` approves only the currently displayed result.
 - A response containing `수정`, `바꿔`, or a new file replaces the current stage input and triggers a new result.
 
-## 품질 보장 기본 지침
+## Quality checks
 
-- 스토리보드: 목적, 대상, 길이, 비율, 장면 순서, 장면별 시간, 화면 행동, 내레이션, 자막, 사운드, 사실 근거를 확인합니다.
-- 이미지: 스토리보드 메시지와 일치하는 대표 구도, 피사체·스타일 일관성, 안전 여백, 텍스트 가독성, 화면 비율을 확인합니다.
-- 영상: 승인된 이미지를 기준으로 동작·카메라·시간 흐름을 설계하고, 불필요한 피사체 변형·깜빡임·왜곡·임의 텍스트를 확인합니다.
-- 모션 그래픽: 승인된 구조화 데이터를 사용하고, 타이밍·레이아웃·폰트·자막 잘림·프레임레이트·해상도를 확인한 뒤 실제 렌더 파일을 검사합니다.
-- 모든 단계: 사실을 임의로 만들지 않고, 결과 파일이 실제로 존재하는지 확인하며, 승인 전에는 다음 결과물을 만들지 않습니다.
-- 시작 인테이크: 프로젝트명·길이·해상도·프레임·화면 비율이 기록되지 않으면 제작을 시작하지 않습니다. 이 다섯 항목은 사용자가 명시적으로 기본 지침을 수정하지 않는 한 영구 필수값입니다. 스토리보드 파일은 첨부하거나 채팅으로 작성할 수 있습니다.
+- Storyboard: check purpose, audience, duration, aspect ratio, scene order, timing, screen action, narration, subtitles, sound, and factual basis.
+- Image: check the representative composition, subject and style consistency, safe margins, text legibility, and aspect ratio.
+- Video: use the approved image as reference and check motion, camera, timing, deformation, flicker, distortion, and unintended text.
+- Motion graphics: use approved structured data and check timing, layout, fonts, clipping, FPS, resolution, and the actual rendered file.
+- All stages: do not invent facts; verify that output files exist; never create the next result before approval.
+- Intake: do not start production until project name, duration, resolution, frame rate, and aspect ratio are recorded. These five fields remain permanently required unless the user explicitly changes the rule. A storyboard file may be attached or drafted in chat.
 
 ## Output discipline
 
