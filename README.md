@@ -33,7 +33,7 @@
 - `public/`에 승인된 최종 표출 파일만 수집
 - Windows DPAPI 기반 개인 지침 암호화 명령
 
-외부 이미지 생성 및 Higgsfield 호출은 현재 실제 인증 정보와 엔드포인트를 넣기 전까지 요청 파일을 생성하는 `waiting_external` 단계로 동작합니다. 인증 정보를 코드나 README에 저장하지 않습니다.
+이미지는 Codex 이미지 생성 기능을 사용하고, 영상은 연결된 Higgsfield 플러그인을 호출합니다. Higgsfield가 연결되지 않았거나 실제 결과를 반환하지 않으면 `waiting_external`에서 멈추며 생성 완료로 보고하지 않습니다.
 
 ## 파일 하이어라키
 
@@ -48,7 +48,11 @@ Tosun Generator/
 ├─ plugins/
 │  └─ tosun-workflow/                Codex 반자동화 플러그인 소스
 │     ├─ .codex-plugin/plugin.json
-│     ├─ skills/tosun-workflow/SKILL.md
+│     ├─ skills/master-tosun/SKILL.md  전체 순서·승인·백업·상태 관리
+│     ├─ skills/storyboard/SKILL.md    스토리보드 작성·분석
+│     ├─ skills/image/SKILL.md         Codex 이미지 생성 호출
+│     ├─ skills/video/SKILL.md         Higgsfield 호출·결과 수집
+│     ├─ skills/remotion/SKILL.md      Remotion 플러그인 호출·렌더
 │     └─ scripts/bridge.py
 ├─ .gitignore
 ├─ config/

@@ -5,7 +5,8 @@
 - `.agents/plugins/marketplace.json`: Git 배포용 마켓플레이스
 - `plugins/tosun-workflow/`: Codex 플러그인 본체
 - `plugins/tosun-workflow/assets/`: composer 아이콘과 로고
-- `plugins/tosun-workflow/skills/tosun-workflow/SKILL.md`: 영구 워크플로우 지침
+- `plugins/tosun-workflow/skills/master-tosun/SKILL.md`: 전체 워크플로우·승인 지침
+- `plugins/tosun-workflow/skills/{storyboard,image,video,remotion}/SKILL.md`: 시퀀스별 실행 지침
 
 ## 설치
 

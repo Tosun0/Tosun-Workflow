@@ -1,7 +1,7 @@
 {
   "name": "tosun-workflow",
-  "version": "0.1.0",
-  "description": "Human-approved storyboard-to-video workflow for Codex.",
+  "version": "0.2.0+codex.20260908051432",
+  "description": "Master-Tosun orchestrates approved storyboard, image, Higgsfield video, and Remotion skills.",
   "author": {
     "name": "Tosun"
   },
@@ -9,12 +9,12 @@
   "interface": {
     "displayName": "Tosun Workflow",
     "shortDescription": "Use Tosun Workflow in Codex.",
-    "longDescription": "Tosun Workflow turns storyboards into approved image, video, and Remotion stages with backups and review gates.",
+    "longDescription": "Master-Tosun routes storyboard, native image generation, connected Higgsfield video, and Remotion plugin rendering through explicit approval gates and backups.",
     "developerName": "Tosun",
     "category": "Productivity",
     "capabilities": [],
     "defaultPrompt": [
-      "토순 워크플로우 사용 방법을 알려줘"
+      "\ud1a0\uc21c \uc6cc\ud06c\ud50c\ub85c\uc6b0 \uc0ac\uc6a9 \ubc29\ubc95\uc744 \uc54c\ub824\uc918"
     ],
     "composerIcon": "./assets/tosun-workflow-small.svg",
     "logo": "./assets/tosun-workflow-logo.svg",

@@ -38,7 +38,7 @@ def compact_manifest(manifest: dict) -> dict:
         "storyboard": "show the storyboard form or draft and wait for the user's acceptance",
         "image": "generate the image, display it, and wait for the user's acceptance",
         "video": "generate the video, display it, and wait for the user's acceptance",
-        "remotion": "render a fast Remotion preview first, display it, then full-render after acceptance",
+        "remotion": "invoke the Remotion plugin for a fast preview, display it, then invoke its full render after acceptance",
     }
     return {
         "project_id": manifest.get("project_id"),
@@ -140,7 +140,7 @@ def command_task(args: argparse.Namespace) -> None:
             "storyboard": "Show the storyboard form or draft and wait for the user's acceptance.",
             "image": "Use Codex image generation, display the result, and wait for the user's acceptance.",
             "video": "Use Higgsfield video generation, display the result, and wait for the user's acceptance.",
-            "remotion": "Render a fast Remotion preview first, display it, and wait for the user's acceptance before full render.",
+            "remotion": "Invoke the Remotion plugin for a fast preview, display it, and wait for the user's acceptance before invoking its full render.",
         }.get(stage, "Execute the current stage and report the exact output path."),
     }
     path = task_dir / f"{manifest['project_id']}__s{workflow.STAGE_NUMBERS[stage]:02d}__{stage}.json"
