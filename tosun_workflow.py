@@ -111,6 +111,36 @@ def hash_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def validate_media_file(path: Path, stage: str) -> dict[str, Any]:
+    if stage == "image":
+        signatures = {
+            ".png": (b"\x89PNG\r\n\x1a\n",),
+            ".jpg": (b"\xff\xd8\xff",),
+            ".jpeg": (b"\xff\xd8\xff",),
+            ".webp": (b"RIFF",),
+            ".gif": (b"GIF87a", b"GIF89a"),
+        }
+        expected = signatures.get(path.suffix.lower(), ())
+        header = path.read_bytes()[:12]
+        if not expected or not any(header.startswith(signature) for signature in expected):
+            raise ValueError(f"invalid image file: {path.name}")
+        return {"status": "success", "kind": "image", "extension": path.suffix.lower()}
+    if stage in {"video", "remotion"}:
+        ffprobe = shutil.which("ffprobe")
+        if not ffprobe:
+            return {"status": "not_run", "reason": "ffprobe is not installed"}
+        result = subprocess.run(
+            [ffprobe, "-v", "error", "-show_entries", "format=duration:stream=codec_name,width,height,r_frame_rate,codec_type", "-of", "json", str(path)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            raise ValueError(f"media decode failed: {path.name}")
+        return {"status": "success", "kind": "video", "probe": json.loads(result.stdout or "{}")}
+    return {"status": "not_run", "reason": f"no media validator for stage {stage}"}
+
+
 def safe_path(relative: str | Path, base: Path = WORKSPACE) -> Path:
     candidate = (base / Path(relative)).resolve()
     root = base.resolve()
@@ -302,6 +332,14 @@ def text_excerpt(path: Path, limit: int = 5000) -> str:
         return ""
 
 
+def stage_input_items(manifest: dict[str, Any], stage: str) -> list[dict[str, Any]]:
+    """Return the latest replacement input for a stage, or the project inputs."""
+    overrides = manifest.get("stage_inputs", {}).get(stage, [])
+    if overrides:
+        return [overrides[-1]]
+    return manifest.get("inputs", [])
+
+
 def load_instruction(name: str) -> str:
     path = INSTRUCTIONS / name
     return path.read_text(encoding="utf-8") if path.exists() else ""
@@ -311,11 +349,11 @@ def run_storyboard(manifest: dict[str, Any]) -> None:
     project_id = manifest["project_id"]
     root = project_dir(project_id)
     inputs = []
-    for item in manifest["inputs"]:
+    for item in stage_input_items(manifest, "storyboard"):
         path = root / item["path"]
         inputs.append({
             "name": item["name"],
-            "role": item["role"],
+            "role": item.get("role", role_for(path)),
             "path": item["path"],
             "extension": path.suffix.lower(),
             "size": path.stat().st_size,
@@ -422,8 +460,18 @@ def attach_output(project_id: str, stage: str, source_path: str, render_phase: s
     source = Path(source_path).expanduser().resolve()
     if not source.exists() or not source.is_file():
         raise FileNotFoundError(source_path)
+    validation = validate_media_file(source, stage)
     manifest = load_manifest(project_id)
     root = project_dir(project_id)
+    state = manifest["stages"][stage]
+    expected_status = "waiting_external"
+    if stage == "remotion" and render_phase == "full":
+        expected_status = "ready"
+    if state.get("status") != expected_status:
+        raise RuntimeError(
+            "stage output cannot be attached before its request/review handoff: "
+            f"{stage} ({state.get('status')}); expected {expected_status}"
+        )
     backup_project(project_id, f"before-attach-{stage}")
     if render_phase == "preview":
         destination = root / "artifacts" / "previews" / PREVIEW_OUTPUT_FILES[stage]
@@ -431,8 +479,7 @@ def attach_output(project_id: str, stage: str, source_path: str, render_phase: s
         destination = root / "artifacts" / "final" / OUTPUT_FILES[stage]
     destination.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(source, destination)
-    state = manifest["stages"][stage]
-    state.update({"status": "waiting_approval", "completed_at": utc_now(), "output": destination.relative_to(root).as_posix(), "render_phase": render_phase})
+    state.update({"status": "waiting_approval", "completed_at": utc_now(), "output": destination.relative_to(root).as_posix(), "render_phase": render_phase, "validation": validation})
     manifest["current_stage"] = stage
     save_manifest(manifest)
     append_event(project_id, "output_attached_waiting_approval", stage=stage, output=destination.relative_to(root).as_posix())
@@ -472,16 +519,32 @@ def replace_stage_input(project_id: str, stage: str, source_path: str) -> dict[s
 def publish(manifest: dict[str, Any]) -> None:
     project_id = manifest["project_id"]
     root = project_dir(project_id)
-    final_root = root / "artifacts" / "final"
     public = root / "public"
     public.mkdir(exist_ok=True)
-    mapping = {"thumbnail.png": "thumbnail.png", "video.mp4": "video.mp4", "infographic.mp4": "infographic.mp4"}
+    mapping = {
+        "image": ("thumbnail.png", "thumbnail.png"),
+        "video": ("video.mp4", "video.mp4"),
+        "remotion": ("infographic.mp4", "infographic.mp4"),
+    }
     files = []
-    for source_name, public_name in mapping.items():
-        source = final_root / source_name
-        if source.exists() and source.is_file():
-            shutil.copy2(source, public / public_name)
-            files.append(public_name)
+    for stage_name, (source_name, public_name) in mapping.items():
+        state = manifest["stages"].get(stage_name, {})
+        if state.get("status") not in {"approved", "completed"}:
+            continue
+        output = state.get("output")
+        if not output:
+            continue
+        source = safe_path(output, root)
+        expected = (root / "artifacts" / "final" / source_name).resolve()
+        if source.resolve() != expected or not source.is_file():
+            continue
+        shutil.copy2(source, public / public_name)
+        files.append(public_name)
+    for public_name in ("thumbnail.png", "video.mp4", "infographic.mp4"):
+        if public_name not in files:
+            stale = public / public_name
+            if stale.exists():
+                stale.unlink()
     public_manifest = {
         "project_id": project_id,
         "title": manifest["title"],
@@ -507,21 +570,45 @@ def run_stage(project_id: str, stage: str) -> dict[str, Any]:
         previous = STAGES[STAGES.index(stage) - 1]
         if manifest["stages"][previous]["status"] not in {"approved", "completed"}:
             raise RuntimeError(f"previous stage is not approved: {previous}")
-    backup_project(project_id, f"before-{stage}")
-    state = manifest["stages"][stage]
-    state["status"] = "running"
-    state["started_at"] = utc_now()
-    save_manifest(manifest)
-    append_event(project_id, "stage_started", stage=stage)
-    if stage == "storyboard":
-        run_storyboard(manifest)
-    elif stage == "prompts":
-        run_prompts(manifest)
-    elif stage in {"image", "video", "remotion"}:
-        run_external_request(manifest, stage)
-    elif stage == "publish":
-        publish(manifest)
-    return load_manifest(project_id)
+    try:
+        backup_project(project_id, f"before-{stage}")
+        state = manifest["stages"][stage]
+        state["status"] = "running"
+        state["started_at"] = utc_now()
+        state.pop("error", None)
+        state.pop("recovery", None)
+        save_manifest(manifest)
+        append_event(project_id, "stage_started", stage=stage)
+        if stage == "storyboard":
+            run_storyboard(manifest)
+        elif stage == "prompts":
+            run_prompts(manifest)
+        elif stage in {"image", "video", "remotion"}:
+            run_external_request(manifest, stage)
+        elif stage == "publish":
+            publish(manifest)
+        return load_manifest(project_id)
+    except Exception as error:
+        state = manifest["stages"][stage]
+        state.update({
+            "status": "failed",
+            "failed_at": utc_now(),
+            "completed_at": None,
+            "error": str(error),
+            "retryable": True,
+            "recovery": "원인을 수정한 뒤 같은 시퀀스를 다시 실행하거나 입력 파일을 교체하세요.",
+        })
+        manifest["current_stage"] = stage
+        report = write_report(
+            project_id,
+            stage,
+            f"{STAGE_LABELS[stage]} 실패",
+            f"실패 원인: {error}\n\n재시도 가능: 예\n복구 방법: 원인을 수정한 뒤 현재 시퀀스를 다시 실행하세요.",
+        )
+        state["report"] = report.relative_to(project_dir(project_id)).as_posix()
+        save_manifest(manifest)
+        append_event(project_id, "stage_failed", stage=stage, error=str(error), retryable=True)
+        raise
 
 
 def approve_stage(project_id: str, stage: str, note: str = "") -> dict[str, Any]:

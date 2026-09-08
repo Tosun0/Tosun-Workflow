@@ -13,14 +13,15 @@ def resolve_project_root() -> Path:
     configured = os.environ.get("TOSUN_WORKFLOW_ROOT")
     if configured:
         candidates.append(Path(configured).expanduser())
+    plugin_root = Path(__file__).resolve().parents[1]
+    candidates.append(plugin_root)
     current = Path.cwd().resolve()
     candidates.append(current)
     candidates.extend(current.parents)
-    candidates.append(Path(r"C:\Unreal Projects\_Util\Tosun Generator"))
     for candidate in candidates:
         if (candidate / "tosun_workflow.py").is_file() and (candidate / "workspace").is_dir():
             return candidate
-    raise RuntimeError("Tosun Workflow project root not found")
+    raise RuntimeError("Tosun Workflow engine is not bundled or TOSUN_WORKFLOW_ROOT is not configured")
 
 
 PROJECT_ROOT = resolve_project_root()

@@ -1,16 +1,16 @@
 {
   "name": "tosun-workflow",
   "version": "0.1.0",
-  "description": "Tosun Workflow plugin",
+  "description": "Human-approved storyboard-to-video workflow for Codex.",
   "author": {
-    "name": "Local developer"
+    "name": "Tosun"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "Tosun Workflow",
     "shortDescription": "Use Tosun Workflow in Codex.",
-    "longDescription": "Tosun Workflow adds a local Codex plugin scaffold.",
-    "developerName": "Local developer",
+    "longDescription": "Tosun Workflow turns storyboards into approved image, video, and Remotion stages with backups and review gates.",
+    "developerName": "Tosun",
     "category": "Productivity",
     "capabilities": [],
     "defaultPrompt": [
