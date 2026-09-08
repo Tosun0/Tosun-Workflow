@@ -102,6 +102,13 @@ OO가 마음에 들지 않는다. 수정하라.
 
 ## Instruction layers
 
+### Delegation routing
+
+- `하위 에이전트`, `내부 에이전트`, `병렬 검증`, or `컷별 담당` means an internal subagent spawned for a bounded subtask. Do not create a user-visible task.
+- `새 채팅`, `새 작업`, `별도 태스크`, or `독립 프로젝트` means a new user-visible Codex task. Create one only when the user explicitly asks for it.
+- Never substitute a new user-visible task for an internal subagent request. If the internal collaboration tool is unavailable, report that limitation instead of silently opening a new task.
+- Keep internal subagent inputs compact and scoped to the assigned cut or check. Return structured results to the main task; the main task owns integration, approval, and final rendering.
+
 ### Mandatory accuracy and execution rules
 
 - These rules always apply and override tone preferences.
