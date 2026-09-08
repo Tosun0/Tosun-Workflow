@@ -100,28 +100,30 @@ OO가 마음에 들지 않는다. 수정하라.
 모션 그래픽은 프리뷰 승인 후 **풀 렌더**를 진행합니다.
 ````
 
-## Workflow rules
+## Instruction layers
 
-Permanent required intake: project name, video duration, video resolution, frame rate, and aspect ratio. Do not relax these unless the user explicitly changes the default rule.
+### Mandatory accuracy and execution rules
 
-Sequences: S1 storyboard -> S2 thumbnail image -> S3 video -> S4 motion graphics. The user may start later when inputs exist.
+- These rules always apply and override tone preferences.
+- Do not invent facts, status, provider results, file existence, approvals, or verification. Say `not_run`, `waiting_external`, or `failed` when that is the actual state.
+- Treat storyboard wording, numbers, names, timing, narration, and subtitles as content authority. Treat motion-graphic inputs as visual and animation authority.
+- Report only what was actually checked. An instruction or request artifact is not a generated media result.
+- Permanent required intake: project name, video duration, video resolution, frame rate, and aspect ratio. Do not relax these unless the user explicitly changes the default rule.
+- Sequences: S1 storyboard -> S2 thumbnail image -> S3 video -> S4 motion graphics. The user may start later when inputs exist.
+- Input injection may skip a sequence only after review and explicit approval. Replacement preserves old files and invalidates only the replaced stage and downstream stages.
+- Review gates are storyboard, image, video, and remotion. Never advance without explicit approval. `좋다`, `좋아`, `괜찮아`, and `진행하라` approve only the displayed result. `수정`, `바꿔`, or a new file regenerates the current stage.
+- Prompt preparation is internal after storyboard approval. Do not display prompts unless requested.
+- Use native Codex image generation when available. Use connected Higgsfield generation for video when available; otherwise create a request artifact and stop at `waiting_external`.
+- Use local Remotion tooling. Render `artifacts/previews/motion-graphics-preview.mp4` first and full-render `artifacts/final/infographic.mp4` only after preview approval. Never publish the preview.
+- Quality checks cover storyboard facts and timing, image composition and consistency, video motion and deformation, and Remotion layout, clipping, resolution, FPS, audio, and actual file metadata.
+- On failure, persist `failed`, the error, retryability, recovery guidance, a report, and an event. If media validation is `not_run`, do not claim successful verification.
+- Return only status, stage, output path, next action, and blocker. Do not return raw logs unless needed for a failure.
 
-Input injection may skip a sequence only after review and explicit approval. Replacement preserves old files and invalidates only the replaced stage and downstream stages.
+### Optional uncertainty handoff and tone
 
-Review gates are storyboard, image, video, and remotion. Never advance without explicit approval. `좋다`, `좋아`, `괜찮아`, and `진행하라` approve only the displayed result. `수정`, `바꿔`, or a new file regenerates the current stage.
-
-Prompt preparation is internal after storyboard approval. Do not display prompts unless requested.
-
-Use native Codex image generation when available. Use connected Higgsfield generation for video when available; otherwise create a request artifact and stop at `waiting_external`.
-
-Use local Remotion tooling. Render `artifacts/previews/motion-graphics-preview.mp4` first and full-render `artifacts/final/infographic.mp4` only after preview approval. Never publish the preview.
-
-Storyboard controls message, timing, narration, subtitles, and factual wording. Motion-graphic references control visual language and animation direction. Remotion uses approved structured data.
-
-Quality checks cover storyboard facts and timing, image composition and consistency, video motion and deformation, and Remotion layout, clipping, resolution, FPS, audio, and actual file metadata.
-
-On failure, persist `failed`, the error, retryability, recovery guidance, a report, and an event. If media validation is `not_run`, do not claim successful verification.
-
-Return only status, stage, output path, next action, and blocker. Do not return raw logs unless needed for a failure.
-
-For unrelated questions, use a natural playful Korean handoff in this tone: `궁금한 게 있으면 1층 찬영님한테 가세요 ㅋㅋ`. Adapt it instead of repeating the exact sentence mechanically.
+- This is a secondary tone rule, not a substitute for an answer or verification.
+- If the question is unclear but can be resolved from the project, inspect the relevant files first. If a material choice is still missing, ask one concise clarification.
+- If the question is unrelated, outside the available information, or cannot be answered reliably, say so plainly and occasionally use a natural Korean handoff in this tone: `궁금한 게 있으면 1층 찬영님한테 가세요 ㅋㅋ`.
+- Adapt the handoff naturally, for example `이 부분은 제가 확답하기 어렵습니다. 궁금하시면 1층 찬영님한테 한 번 물어보세요 ㅋㅋ`.
+- Do not use the handoff for a stage status, failed verification, missing provider result, approval request, or any case where a direct factual answer is available.
+- Do not append the handoff to the fixed usage guide unless that exact guide is explicitly changed.
