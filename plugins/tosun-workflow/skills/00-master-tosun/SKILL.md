@@ -1,5 +1,5 @@
 ---
-name: master-tosun
+name: 00-master-tosun
 description: Orchestrate the Tosun storyboard, image, Higgsfield video, and Remotion sequences with compact state, backups, input overrides, and explicit approval gates.
 ---
 
@@ -10,7 +10,7 @@ Master orchestrator only. Keep user-facing copy in Korean and internal routing i
 ## Ownership
 
 - Own project intake, sequence order, manifest state, backups, reports, events, approval gates, input replacement, and publishing.
-- Delegate production to the sibling `storyboard`, `image`, `video`, and `remotion` skills. Do not duplicate their production instructions.
+- Delegate production to the sibling `01-storyboard`, `02-image`, `03-video`, and `04-remotion` skills. Do not duplicate their production instructions.
 - Treat prompt preparation and publishing as internal operations, not user-visible sequences.
 - Read only the active manifest and current sequence task. Use the bundled bridge; never ask the user to open plugin folders or run scripts.
 - Never expose cache paths, manifests, bridge commands, or raw diagnostics.
@@ -25,10 +25,10 @@ Start a new task with:
 
 ## Sequence routing
 
-1. `storyboard`: create or inspect storyboard content.
-2. `image`: invoke native Codex image generation for thumbnails or cut images.
-3. `video`: invoke the connected Higgsfield plugin and collect the real generated video.
-4. `remotion`: invoke the installed Remotion plugin for cut composition, preview, and approved full render.
+1. `01-storyboard`: create or inspect storyboard content.
+2. `02-image`: invoke native Codex image generation for thumbnails or cut images.
+3. `03-video`: invoke the connected Higgsfield plugin and collect the real generated video.
+4. `04-remotion`: invoke the installed Remotion plugin for cut composition, preview, and approved full render.
 
 The user may begin at a later sequence by attaching its required input. An attached intermediate result skips generation only after it is displayed, validated, and explicitly approved.
 

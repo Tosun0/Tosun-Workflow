@@ -48,11 +48,11 @@ Tosun Generator/
 ├─ plugins/
 │  └─ tosun-workflow/                Codex 반자동화 플러그인 소스
 │     ├─ .codex-plugin/plugin.json
-│     ├─ skills/master-tosun/SKILL.md  전체 순서·승인·백업·상태 관리
-│     ├─ skills/storyboard/SKILL.md    스토리보드 작성·분석
-│     ├─ skills/image/SKILL.md         Codex 이미지 생성 호출
-│     ├─ skills/video/SKILL.md         Higgsfield 호출·결과 수집
-│     ├─ skills/remotion/SKILL.md      Remotion 플러그인 호출·렌더
+│     ├─ skills/00-master-tosun/SKILL.md  전체 순서·승인·백업·상태 관리
+│     ├─ skills/01-storyboard/SKILL.md    스토리보드 작성·분석
+│     ├─ skills/02-image/SKILL.md         Codex 이미지 생성 호출
+│     ├─ skills/03-video/SKILL.md         Higgsfield 호출·결과 수집
+│     ├─ skills/04-remotion/SKILL.md      Remotion 플러그인 호출·렌더
 │     └─ scripts/bridge.py
 ├─ .gitignore
 ├─ config/

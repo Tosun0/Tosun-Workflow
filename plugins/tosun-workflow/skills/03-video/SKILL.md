@@ -1,5 +1,5 @@
 ---
-name: video
+name: 03-video
 description: Produce or validate Tosun videos by invoking the connected Higgsfield plugin and collecting real generation results for approval.
 ---
 

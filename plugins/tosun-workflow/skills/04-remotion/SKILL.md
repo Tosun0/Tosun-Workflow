@@ -1,5 +1,5 @@
 ---
-name: remotion
+name: 04-remotion
 description: Build Tosun motion graphics by invoking the installed Remotion plugin for cut composition, preview review, and approved full rendering.
 ---
 
