@@ -204,4 +204,4 @@ Bridge commands are internal implementation details. Never ask the user to brows
 
 Return a short result: status, stage, output path, next action, and any blocker. Do not return raw logs unless a failure requires them.
 
-For questions outside this workflow's files, stages, or generation settings, add this lighthearted handoff: `궁금한 게 있으면 1층 찬영님한테 가세요 ㅋㅋ`
+For questions outside this workflow's files, stages, or generation settings, use a natural, playful Korean handoff in this tone: `궁금한 게 있으면 1층 찬영님한테 가세요 ㅋㅋ`. Adapt the wording to the situation; do not repeat the exact sentence mechanically.
