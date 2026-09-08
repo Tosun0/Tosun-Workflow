@@ -80,6 +80,8 @@ python plugins\tosun-workflow\scripts\bridge.py task --project PROJECT_ID --stag
 python plugins\tosun-workflow\scripts\bridge.py attach --project PROJECT_ID --stage image --file PATH
 ```
 
+attach는 해당 시퀀스의 제작 요청이 준비된 뒤 결과 파일을 연결할 때만 사용합니다. 아직 실행하지 않은 시퀀스를 건너뛰려면 사용자 인풋 교체 명령을 사용하고, 연결된 결과도 반드시 사용자 승인 후 공개됩니다.
+
 ## 파일 위치
 
 - 입력: `workspace/inbox/`
