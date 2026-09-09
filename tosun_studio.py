@@ -10,24 +10,19 @@ import os
 import re
 import shutil
 import subprocess
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 
-APP_ROOT = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent
-DEV_ROOT = APP_ROOT.parent.parent if getattr(sys, "frozen", False) and APP_ROOT.parent.name == "packaged" else APP_ROOT
-DATA_ROOT = DEV_ROOT if (DEV_ROOT / "workspace").exists() else APP_ROOT
-ROOT = APP_ROOT
-WORKSPACE = DATA_ROOT / "workspace"
+ROOT = Path(__file__).resolve().parent
+WORKSPACE = ROOT / "workspace"
 INBOX = WORKSPACE / "inbox"
 PROJECTS = WORKSPACE / "projects"
 BACKUPS = WORKSPACE / "backups"
 EXPORTS = WORKSPACE / "exports"
-INSTRUCTIONS = DATA_ROOT / "instructions"
-WEB = ROOT / "web"
-CONFIG = DATA_ROOT / "config"
+INSTRUCTIONS = ROOT / "instructions"
+CONFIG = ROOT / "config"
 SUPPORTED = {
     ".txt", ".md", ".markdown", ".json", ".csv", ".docx", ".pdf",
     ".png", ".jpg", ".jpeg", ".webp", ".gif", ".mp4", ".mov", ".webm",

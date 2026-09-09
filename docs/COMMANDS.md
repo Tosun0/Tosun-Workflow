@@ -22,7 +22,7 @@ Codex에게 아래처럼 짧게 말하면 됩니다.
 
 | 명령 | 동작 |
 |---|---|
-| `토순 워크플로우 상태 확인` | 현재 프로젝트와 단계 확인 |
+| `토순 스튜디오 상태 확인` | 현재 프로젝트와 단계 확인 |
 | `스토리보드를 작성하라` | 스토리보드 양식 출력 또는 입력 자료를 양식으로 정리 |
 | `이미지를 생성하라` | 승인된 스토리보드로 썸네일 이미지 제작 및 표시 |
 | `영상을 제작하라` | 승인된 이미지로 영상 제작 및 표시 |
@@ -30,43 +30,15 @@ Codex에게 아래처럼 짧게 말하면 됩니다.
 | `좋아` / `진행해` | 현재 표시 결과 승인 |
 | `수정해` | 현재 결과를 수정하거나 새 인풋으로 교체 |
 | `프로젝트 백업해` | 수동 백업 생성 |
-| `토순 워크플로우 도움말` | 이 명령 모음 표시 |
+| `토순 스튜디오 도움말` | 이 명령 모음 표시 |
 
 프로젝트 시작 양식은 [templates/project-intake-form.md](../templates/project-intake-form.md)입니다.
 
 명령어와 시퀀스는 별개입니다. 시퀀스는 작업 범위를 선택하고, 명령어는 선택한 시퀀스를 실행합니다.
 
-## 내부 CLI 명령
+## 내부 실행 구조
 
-일반 사용자는 실행할 필요가 없습니다. Codex 플러그인이 내부적으로 호출합니다. 장애 조사나 개발 시에만 프로젝트 루트에서 사용합니다.
-
-```powershell
-# GUI 실행
-.\run.ps1
-
-# EXE 패키징
-.\package.ps1
-
-# GUI 서버 직접 실행
-python runner.py --serve --port 8765
-
-# 프로젝트 생성
-python runner.py --new-project "Project Title" inbox\storyboard.md inbox\motion-reference.png
-
-# 내부 단계 실행
-python runner.py --run PROJECT_ID storyboard
-python runner.py --run PROJECT_ID image
-
-# 사용자 확인은 Codex가 내부적으로 처리
-python runner.py --approve PROJECT_ID storyboard
-python runner.py --approve PROJECT_ID image
-
-# 백업
-python runner.py --backup PROJECT_ID manual-before-revision
-
-# 개인 지침 암호화
-python runner.py --encrypt-private instructions\private-template.md
-```
+일반 사용자는 내부 명령을 직접 실행할 필요가 없습니다. Codex 플러그인이 Master skill과 하위 시퀀스 skill을 통해 엔진 bridge를 호출합니다.
 
 ## Codex bridge 명령 (내부용)
 

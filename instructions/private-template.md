@@ -4,4 +4,4 @@
 
 - 공개 가능한 일반 규칙은 `instructions/core.md`에 둡니다.
 - API 키, 비밀번호, 세션 토큰은 이 파일에도 넣지 않습니다.
-- 완성 후 `python runner.py --encrypt-private instructions/private-template.md`로 암호화합니다.
+- 개인 지침 원문은 저장소에 올리지 않고, Tosun Studio의 사용자 계정 암호화 저장소에 보관합니다.

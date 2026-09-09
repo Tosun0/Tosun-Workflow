@@ -16,3 +16,4 @@ workspace/exports/*
 !workspace/backups/README.md
 !workspace/cache/README.md
 !workspace/exports/README.md
+graphify-out/

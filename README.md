@@ -1,4 +1,4 @@
-# Tosun Studio Generator
+# Tosun Studio
 
 스토리보드와 모션그래픽 자료를 넣고, Codex 대화창에서 각 단계의 결과를 확인·승인하는 반자동 제작 워크플로우입니다.
 
@@ -41,10 +41,7 @@
 Tosun Studio/
 ├─ AGENTS.md                         Codex 작업 지침
 ├─ README.md                         사람용 사용 설명
-├─ runner.py                         로컬 엔진과 CLI 진입점
 ├─ tosun_studio.py                 상태/파일/백업/단계 로직
-├─ run.ps1                           Windows 실행 스크립트
-├─ package.ps1                       EXE 패키징 스크립트
 ├─ plugins/
 │  └─ tosun-studio/                Codex 반자동화 플러그인 소스
 │     ├─ .codex-plugin/plugin.json
@@ -68,10 +65,6 @@ Tosun Studio/
 ├─ templates/
 │  ├─ project-intake-form.md           프로젝트 시작 정보 양식
 │  └─ storyboard-form.md              스토리보드 작성 양식
-├─ web/                              (선택적 레거시 GUI)
-│  ├─ index.html
-│  ├─ app.js
-│  └─ styles.css
 ├─ workspace/
    ├─ inbox/                         새 입력 파일 투입 위치
    ├─ projects/<project-id>/
@@ -83,33 +76,17 @@ Tosun Studio/
    │  └─ events.jsonl                 승인/수정/실행 이벤트
    ├─ backups/<project-id>/            타임스탬프별 백업
 │  └─ exports/                         최종 외부 전달물
-├─ packaged/TosunStudio/             (선택적 레거시 EXE 패키지)
-│  ├─ TosunStudio.exe
-│  ├─ web/
-│  ├─ config/                          패키지 설정
-│  ├─ instructions/                    패키지 지침
-│  └─ workspace/                       패키지 작업공간
 ```
 
-## 레거시 GUI/EXE
+## 실행 구조
 
-```powershell
-.\package.ps1
-```
+Codex → Tosun Studio Master skill → storyboard/image/video/remotion 하위 skill → 플러그인 bridge → tosun_studio.py 엔진 → workspace
 
-GUI와 EXE는 기존 작업을 위한 보관용 선택 기능입니다. 일반 작업에서는 Codex 플러그인을 사용합니다.
-
-명령어는 [docs/COMMANDS.md](docs/COMMANDS.md), 처음 사용하는 방법은 [docs/USER_GUIDE.md](docs/USER_GUIDE.md)를 참고하세요.
+사용자는 Codex 대화창에서 명령을 입력하고 결과를 승인합니다. 플러그인 폴더, Python 파일, GUI를 직접 열 필요가 없습니다.
 
 ## 암호화된 개인 지침
 
-Windows 사용자 계정에 묶인 DPAPI 파일을 만듭니다.
-
-```powershell
-python runner.py --encrypt-private instructions/private-template.md
-```
-
-생성 파일은 `instructions/private.enc`입니다. 복호화된 내용은 파일로 저장하지 않고 실행 중에만 읽습니다. 단, 모델에 전달한 내용은 모델 제공자에게 보일 수 있으므로 암호화는 저장 장치 보호용입니다.
+개인 지침 원문은 저장소에 올리지 않고 사용자 계정에 묶인 암호화 저장소에 보관합니다. 생성된 instructions/private.enc는 저장소에 포함하지 않습니다.
 
 ## 명명 규칙
 
